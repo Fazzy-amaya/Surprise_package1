@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>✨ Kiss Danny · Birthday Surprise ✨</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #fef9e4 0%, #fff3c9 100%);
+      font-family: 'Quicksand', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* floating yellow decorations */
+    .floating-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .floating-bg i {
+      position: absolute;
+      color: rgba(241, 196, 15, 0.18);
+      font-size: 3rem;
+      animation: floatAround 22s infinite ease-in-out;
+    }
+
+    @keyframes floatAround {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+      50% { transform: translateY(-30px) rotate(10deg); opacity: 0.35; }
+      100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      max-width: 750px;
+      width: 100%;
+      background: rgba(255, 255, 245, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 48px;
+      box-shadow: 0 30px 50px rgba(218, 165, 32, 0.25), 0 10px 25px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,240,0.8);
+      border: 2px solid #f7dc6f;
+      padding: 35px 28px;
+      transition: all 0.4s ease;
+    }
+
+    .prompt-box {
+      text-align: center;
+      transition: opacity 0.3s;
+    }
+
+    .prompt-box h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #b37b1e;
+      text-shadow: 4px 4px 0 #ffe082;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .prompt-box .sub-prompt {
+      font-size: 1.4rem;
+      color: #8b6914;
+      margin-bottom: 30px;
+      font-weight: 500;
+      background: #fff1b8;
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 60px;
+      box-shadow: inset 0 1px 3px #d4a017;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* SQUARE BUTTONS */
+    .square-btn {
+      width: 140px;
+      height: 140px;
+      background: #f1c40f;
+      border: 4px solid #e6b800;
+      box-shadow: 0 12px 0 #b87c00, 0 8px 20px rgba(180, 120, 0, 0.3);
+      border-radius: 18px;  /* square with soft corners */
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #3d2a00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.08s linear;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-family: 'Quicksand', sans-serif;
+      line-height: 1;
+    }
+
+    .square-btn i {
+      font-size: 2.8rem;
+      margin-right: 6px;
+      color: #5e3e00;
+    }
+
+    .square-btn:active {
+      transform: translateY(8px);
+      box-shadow: 0 4px 0 #9e6d00, 0 8px 18px rgba(180,120,0,0.3);
+    }
+
+    .square-btn.yes-btn {
+      background: #ffe55c;
+      border-color: #f5b700;
+      box-shadow: 0 12px 0 #c99600, 0 8px 20px #e6b80066;
+    }
+
+    .square-btn.no-btn {
+      background: #fff1b0;
+      border-color: #e0b000;
+      box-shadow: 0 12px 0 #b8860b, 0 8px 20px #b8860b66;
+    }
+
+    .no-message {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      color: #9e7100;
+      background: #ffea9e;
+      padding: 12px 18px;
+      border-radius: 50px;
+      display: inline-block;
+      border-left: 8px solid #f1c40f;
+      font-weight: 600;
+    }
+
+    /* SURPRISE SECTION */
+    .surprise-section {
+      display: none;
+      text-align: center;
+    }
+
+    .birthday-header {
+      animation: softPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes softPop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .photo-frame {
+      width: 200px;
+      height: 200px;
+      margin: 10px auto 20px;
+      border-radius: 50%;
+      background: #ffe082;
+      padding: 8px;
+      box-shadow: 0 20px 30px -5px rgba(184, 124, 0, 0.3), 0 0 0 6px #f9e076, 0 0 0 12px #fcefb4;
+      border: 3px dashed #b37b1e;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;      /* ensures the picture fills the circle nicely */
+      display: block;
+      background: #f1c40f;    /* fallback color */
+      box-shadow: inset 0 0 0 2px white;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #7a4b00;
+      text-shadow: 6px 6px 0 #ffd966;
+      margin: 20px 0 8px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .cry-message {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #b37b1e;
+      background: #fff6d6;
+      padding: 14px 20px;
+      border-radius: 60px;
+      display: inline-block;
+      margin: 20px 0 15px;
+      border: 2px solid #f3b700;
+      box-shadow: 0 4px 0 #d4a017;
+    }
+
+    .heartfelt-text {
+      font-size: 1.35rem;
+      color: #5a3e00;
+      background: rgba(255, 251, 220, 0.7);
+      padding: 22px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      margin: 25px 0 15px;
+      border-left: 12px solid #f7ca18;
+      font-weight: 500;
+      line-height: 1.6;
+      box-shadow: inset 0 2px 8px #ffe28c;
+      animation: gentlePulse 3s infinite;
+    }
+
+    @keyframes gentlePulse {
+      0% { box-shadow: inset 0 2px 8px #ffe28c, 0 4px 8px rgba(241,196,15,0.1); }
+      50% { box-shadow: inset 0 4px 14px #ffd966, 0 8px 18px rgba(241,196,15,0.25); }
+      100% { box-shadow: inset 0 2px 8px #ffe28c, 0 4px 8px rgba(241,196,15,0.1); }
+    }
+
+    .decor-line {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin: 20px 0 5px;
+      color: #e6b422;
+      font-size: 2rem;
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #926d15;
+    }
+
+    .replay-note {
+      margin-top: 20px;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 550px) {
+      .card { padding: 25px 18px; }
+      .square-btn { width: 120px; height: 120px; font-size: 1.8rem; }
+      h1 { font-size: 2.5rem; }
+      .prompt-box h2 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- floating background icons -->
+<div class="floating-bg">
+  <i class="fas fa-star" style="top: 10%; left: 5%; font-size: 4rem; opacity: 0.2;"></i>
+  <i class="fas fa-crown" style="top: 70%; left: 85%; font-size: 4.5rem; opacity: 0.2; color: #d4a017;"></i>
+  <i class="fas fa-gift" style="top: 20%; left: 90%; font-size: 3.5rem; opacity: 0.15;"></i>
+  <i class="fas fa-heart" style="top: 80%; left: 10%; font-size: 4rem; opacity: 0.2; color: #f1c40f;"></i>
+  <i class="fas fa-sun" style="top: 45%; left: 15%; font-size: 5rem; opacity: 0.15;"></i>
+  <i class="fas fa-cake-candles" style="top: 60%; left: 75%; font-size: 3.8rem; opacity: 0.18;"></i>
+  <i class="fas fa-face-smile" style="top: 30%; left: 30%; font-size: 3rem; opacity: 0.1;"></i>
+</div>
+
+<div class="card">
+  <!-- PROMPT SECTION -->
+  <div id="promptSection" class="prompt-box">
+    <h2>🎂 A little surprise awaits 🎂</h2>
+    <div class="sub-prompt">
+      <i class="fa-regular fa-star"></i> for Kiss Danny <i class="fa-regular fa-star"></i>
+    </div>
+    <div style="margin: 25px 0 10px; font-size: 1.8rem; color:#ac7c14;">
+      <i class="fa-regular fa-face-smile-wink"></i>
+    </div>
+    <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color:#8a5f00;">
+      Do you want to see the surprise?
+    </p>
+    <div class="button-group">
+      <div class="square-btn yes-btn" id="yesButton">
+        <i class="fa-regular fa-thumbs-up"></i> YES
+      </div>
+      <div class="square-btn no-btn" id="noButton">
+        <i class="fa-regular fa-face-frown"></i> NO
+      </div>
+    </div>
+    <div id="noMessageContainer" style="min-height: 60px;">
+      <div id="noMessage" class="no-message" style="display: none;">
+        💛 That's okay… but the surprise is still waiting if you change your mind. 💛
+      </div>
+    </div>
+    <p style="margin-top: 30px; opacity: 0.7; color: #7a5c00;">
+      <i class="fa-regular fa-heart"></i> made with yellow love <i class="fa-regular fa-heart"></i>
+    </p>
+  </div>
+
+  <!-- SURPRISE SECTION (hidden until YES) -->
+  <div id="surpriseSection" class="surprise-section">
+    <div class="birthday-header">
+      <div class="photo-frame">
+        <!-- 🔽🔽🔽 PASTE YOUR CATBOX IMAGE LINK BELOW (replace the src URL) 🔽🔽🔽 -->
+        <img src="https://files.catbox.moe/hcw52r.jpg" alt="Kiss Danny" style="background: #f7dc6f;">
+        <!-- 👆👆👆 Replace the src above with your actual Catbox link 👆👆👆 -->
+      </div>
+      <h1>
+        HAPPY BIRTHDAY<br>KISS DANNY! 🎉
+      </h1>
+      <div class="decor-line">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+      </div>
+      <div class="cry-message">
+        <i class="fa-regular fa-face-grin-tears"></i> This is YOUR moment! <i class="fa-regular fa-face-grin-tears"></i>
+      </div>
+    </div>
+
+    <div class="heartfelt-text">
+      <i class="fa-solid fa-quote-left" style="color: #d4a017;"></i> 
+      Danny, you’re the sunshine in every room — and yellow is your color for a reason. 
+      You bring warmth, laughter, and the kind of friendship that makes life beautiful. 
+      Today, the whole world celebrates YOU. May your day be filled with golden joy, cake, and tears of happiness. 
+      I’m so lucky to call you my friend. Keep shining, you absolute legend. 
+      <i class="fa-solid fa-quote-right" style="color: #d4a017;"></i>
+      <br>
+      <span style="display: inline-block; margin-top: 16px; background: #fce184; padding: 6px 20px; border-radius: 30px; font-size: 1.6rem;">
+        💛 LOVE YOU, KISS DANNY 💛
+      </span>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 30px; font-size: 2.2rem; margin: 20px 0;">
+      <i class="fa-solid fa-cake-candles" style="color: #d4a017;"></i>
+      <i class="fa-solid fa-balloon" style="color: #f1c40f;"></i>
+      <i class="fa-solid fa-gift" style="color: #e6b422;"></i>
+      <i class="fa-solid fa-champagne-glasses" style="color: #f1c40f;"></i>
+    </div>
+
+    <div class="signature">
+      <i class="fa-regular fa-heart"></i> with all my yellow heart · your forever friend <i class="fa-regular fa-heart"></i>
+    </div>
+    <div class="replay-note">
+      <i class="fa-regular fa-face-smile"></i> (refresh page to see the magic again)
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const promptSection = document.getElementById('promptSection');
+    const surpriseSection = document.getElementById('surpriseSection');
+    const yesBtn = document.getElementById('yesButton');
+    const noBtn = document.getElementById('noButton');
+    const noMessageDiv = document.getElementById('noMessage');
+    let surpriseShown = false;
+
+    function fireConfetti() {
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#f1c40f', '#f39c12', '#f7dc6f', '#e6b800', '#fff4b0', '#d4a017'] });
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.5, x: 0.3 }, colors: ['#f9e076', '#ffd966', '#ffe082', '#f0b300'] });
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.5, x: 0.7 }, colors: ['#f1c40f', '#f5b700', '#ffdf7e', '#e6b422'] });
+      setTimeout(() => { confetti({ particleCount: 250, spread: 140, origin: { y: 0.5 }, colors: ['#ffd966', '#f9e076', '#ffe28c', '#f7ca18'] }); }, 180);
+      setTimeout(() => { confetti({ particleCount: 300, spread: 160, origin: { y: 0.4 }, colors: ['#f1c40f', '#f39c12', '#e6b800', '#fce184'] }); }, 350);
+    }
+
+    function revealSurprise() {
+      if (surpriseShown) return;
+      surpriseShown = true;
+      promptSection.style.display = 'none';
+      surpriseSection.style.display = 'block';
+      fireConfetti();
+      setTimeout(() => { confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } }); }, 500);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    yesBtn.addEventListener('click', (e) => { e.stopPropagation(); revealSurprise(); });
+    noBtn.addEventListener('click', (e) => { 
+      e.stopPropagation(); 
+      noMessageDiv.style.display = 'inline-block'; 
+      noBtn.style.transform = 'translateY(4px)'; 
+      setTimeout(() => noBtn.style.transform = '', 120);
+    });
+  })();
+</script>
+
+</body>
+</html>

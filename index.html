@@ -1,340 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>✨ Kiss Danny · Birthday Surprise ✨</title>
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- confetti library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      background: linear-gradient(145deg, #fef9e4 0%, #fff3c9 100%);
-      font-family: 'Quicksand', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* floating yellow decorations */
-    .floating-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .floating-bg i {
-      position: absolute;
-      color: rgba(241, 196, 15, 0.18);
-      font-size: 3rem;
-      animation: floatAround 22s infinite ease-in-out;
-    }
-
-    @keyframes floatAround {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
-      50% { transform: translateY(-30px) rotate(10deg); opacity: 0.35; }
-      100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
-    }
-
-    .card {
-      position: relative;
-      z-index: 10;
-      max-width: 750px;
-      width: 100%;
-      background: rgba(255, 255, 245, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 48px;
-      box-shadow: 0 30px 50px rgba(218, 165, 32, 0.25), 0 10px 25px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,240,0.8);
-      border: 2px solid #f7dc6f;
-      padding: 35px 28px;
-      transition: all 0.4s ease;
-    }
-
-    .prompt-box {
-      text-align: center;
-      transition: opacity 0.3s;
-    }
-
-    .prompt-box h2 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: #b37b1e;
-      text-shadow: 4px 4px 0 #ffe082;
-      letter-spacing: -0.5px;
-      margin-bottom: 12px;
-    }
-
-    .prompt-box .sub-prompt {
-      font-size: 1.4rem;
-      color: #8b6914;
-      margin-bottom: 30px;
-      font-weight: 500;
-      background: #fff1b8;
-      display: inline-block;
-      padding: 8px 24px;
-      border-radius: 60px;
-      box-shadow: inset 0 1px 3px #d4a017;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 25px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* SQUARE BUTTONS */
-    .square-btn {
-      width: 140px;
-      height: 140px;
-      background: #f1c40f;
-      border: 4px solid #e6b800;
-      box-shadow: 0 12px 0 #b87c00, 0 8px 20px rgba(180, 120, 0, 0.3);
-      border-radius: 18px;  /* square with soft corners */
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: #3d2a00;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.08s linear;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-family: 'Quicksand', sans-serif;
-      line-height: 1;
-    }
-
-    .square-btn i {
-      font-size: 2.8rem;
-      margin-right: 6px;
-      color: #5e3e00;
-    }
-
-    .square-btn:active {
-      transform: translateY(8px);
-      box-shadow: 0 4px 0 #9e6d00, 0 8px 18px rgba(180,120,0,0.3);
-    }
-
-    .square-btn.yes-btn {
-      background: #ffe55c;
-      border-color: #f5b700;
-      box-shadow: 0 12px 0 #c99600, 0 8px 20px #e6b80066;
-    }
-
-    .square-btn.no-btn {
-      background: #fff1b0;
-      border-color: #e0b000;
-      box-shadow: 0 12px 0 #b8860b, 0 8px 20px #b8860b66;
-    }
-
-    .no-message {
-      margin-top: 30px;
-      font-size: 1.3rem;
-      color: #9e7100;
-      background: #ffea9e;
-      padding: 12px 18px;
-      border-radius: 50px;
-      display: inline-block;
-      border-left: 8px solid #f1c40f;
-      font-weight: 600;
-    }
-
-    /* SURPRISE SECTION */
-    .surprise-section {
-      display: none;
-      text-align: center;
-    }
-
-    .birthday-header {
-      animation: softPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes softPop {
-      0% { transform: scale(0.7); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .photo-frame {
-      width: 200px;
-      height: 200px;
-      margin: 10px auto 20px;
-      border-radius: 50%;
-      background: #ffe082;
-      padding: 8px;
-      box-shadow: 0 20px 30px -5px rgba(184, 124, 0, 0.3), 0 0 0 6px #f9e076, 0 0 0 12px #fcefb4;
-      border: 3px dashed #b37b1e;
-    }
-
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;      /* ensures the picture fills the circle nicely */
-      display: block;
-      background: #f1c40f;    /* fallback color */
-      box-shadow: inset 0 0 0 2px white;
-    }
-
-    h1 {
-      font-size: 3.2rem;
-      font-weight: 800;
-      color: #7a4b00;
-      text-shadow: 6px 6px 0 #ffd966;
-      margin: 20px 0 8px;
-      line-height: 1.2;
-      word-break: break-word;
-    }
-
-    .cry-message {
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: #b37b1e;
-      background: #fff6d6;
-      padding: 14px 20px;
-      border-radius: 60px;
-      display: inline-block;
-      margin: 20px 0 15px;
-      border: 2px solid #f3b700;
-      box-shadow: 0 4px 0 #d4a017;
-    }
-
-    .heartfelt-text {
-      font-size: 1.35rem;
-      color: #5a3e00;
-      background: rgba(255, 251, 220, 0.7);
-      padding: 22px 18px;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
-      margin: 25px 0 15px;
-      border-left: 12px solid #f7ca18;
-      font-weight: 500;
-      line-height: 1.6;
-      box-shadow: inset 0 2px 8px #ffe28c;
-      animation: gentlePulse 3s infinite;
-    }
-
-    @keyframes gentlePulse {
-      0% { box-shadow: inset 0 2px 8px #ffe28c, 0 4px 8px rgba(241,196,15,0.1); }
-      50% { box-shadow: inset 0 4px 14px #ffd966, 0 8px 18px rgba(241,196,15,0.25); }
-      100% { box-shadow: inset 0 2px 8px #ffe28c, 0 4px 8px rgba(241,196,15,0.1); }
-    }
-
-    .decor-line {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      margin: 20px 0 5px;
-      color: #e6b422;
-      font-size: 2rem;
-    }
-
-    .signature {
-      margin-top: 30px;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #926d15;
-    }
-
-    .replay-note {
-      margin-top: 20px;
-      font-size: 1rem;
-      opacity: 0.8;
-    }
-
-    @media (max-width: 550px) {
-      .card { padding: 25px 18px; }
-      .square-btn { width: 120px; height: 120px; font-size: 1.8rem; }
-      h1 { font-size: 2.5rem; }
-      .prompt-box h2 { font-size: 1.9rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Wisdom Live | New York Keynote Experience</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes pulse-radio {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+        .radio-wave {
+            position: relative;
+        }
+        .radio-wave::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 9999px;
+            border: 2px solid #3b82f6;
+            animation: pulse-radio 1.5s infinite;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 font-sans antialiased">
 
-<!-- floating background icons -->
-<div class="floating-bg">
-  <i class="fas fa-star" style="top: 10%; left: 5%; font-size: 4rem; opacity: 0.2;"></i>
-  <i class="fas fa-crown" style="top: 70%; left: 85%; font-size: 4.5rem; opacity: 0.2; color: #d4a017;"></i>
-  <i class="fas fa-gift" style="top: 20%; left: 90%; font-size: 3.5rem; opacity: 0.15;"></i>
-  <i class="fas fa-heart" style="top: 80%; left: 10%; font-size: 4rem; opacity: 0.2; color: #f1c40f;"></i>
-  <i class="fas fa-sun" style="top: 45%; left: 15%; font-size: 5rem; opacity: 0.15;"></i>
-  <i class="fas fa-cake-candles" style="top: 60%; left: 75%; font-size: 3.8rem; opacity: 0.18;"></i>
-  <i class="fas fa-face-smile" style="top: 30%; left: 30%; font-size: 3rem; opacity: 0.1;"></i>
-</div>
+    <!-- Navigation (Sticky) - UPDATED: Button links directly to Telegram -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-3 flex justify-between items-center">
+        <div class="text-2xl font-bold text-slate-800 tracking-tight">☀️ WEATHER <span class="text-blue-600">WISDOM</span></div>
+        <a href="https://t.me/ethanwalker071" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full text-sm shadow-md transition radio-wave">GET TICKETS</a>
+    </nav>
 
-<div class="card">
-  <!-- PROMPT SECTION -->
-  <div id="promptSection" class="prompt-box">
-    <h2>🎂 A little surprise awaits 🎂</h2>
-    <div class="sub-prompt">
-      <i class="fa-regular fa-star"></i> for Kiss Danny <i class="fa-regular fa-star"></i>
-    </div>
-    <div style="margin: 25px 0 10px; font-size: 1.8rem; color:#ac7c14;">
-      <i class="fa-regular fa-face-smile-wink"></i>
-    </div>
-    <p style="font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; color:#8a5f00;">
-      Do you want to see the surprise?
-    </p>
-    <div class="button-group">
-      <div class="square-btn yes-btn" id="yesButton">
-        <i class="fa-regular fa-thumbs-up"></i> YES
-      </div>
-      <div class="square-btn no-btn" id="noButton">
-        <i class="fa-regular fa-face-frown"></i> NO
-      </div>
-    </div>
-    <div id="noMessageContainer" style="min-height: 60px;">
-      <div id="noMessage" class="no-message" style="display: none;">
-        💛 That's okay… but the surprise is still waiting if you change your mind. 💛
-      </div>
-    </div>
-    <p style="margin-top: 30px; opacity: 0.7; color: #7a5c00;">
-      <i class="fa-regular fa-heart"></i> made with yellow love <i class="fa-regular fa-heart"></i>
-    </p>
-  </div>
+    <!-- Hero Section -->
+    <header class="max-w-7xl mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1 text-center md:text-left">
+            <div class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full mb-4 tracking-wider">NEW YORK CITY • LIVE EVENT</div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                Storm Proof Your <br> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Life & Business</span>
+            </h1>
+            <p class="text-lg text-slate-600 mt-6 max-w-2xl">
+                Join the voice of radio for an exclusive 75-minute keynote in NYC. Real weather stories, urban survival hacks, and the forecast that changes your tomorrow.
+            </p>
+            
+            <!-- Countdown Timer -->
+            <div class="mt-8 bg-white p-4 rounded-2xl shadow-lg border border-slate-100 inline-block">
+                <p class="text-sm font-medium text-slate-500 mb-2"><i class="far fa-clock mr-1"></i> EARLY BIRD SAVINGS ($50 OFF) ENDS IN:</p>
+                <div class="flex gap-4 text-center">
+                    <div><span id="days" class="text-3xl font-bold text-blue-600">14</span><p class="text-xs uppercase tracking-wide text-slate-400">Days</p></div>
+                    <div><span id="hours" class="text-3xl font-bold text-blue-600">08</span><p class="text-xs uppercase tracking-wide text-slate-400">Hrs</p></div>
+                    <div><span id="minutes" class="text-3xl font-bold text-blue-600">22</span><p class="text-xs uppercase tracking-wide text-slate-400">Mins</p></div>
+                    <div><span id="seconds" class="text-3xl font-bold text-blue-600">45</span><p class="text-xs uppercase tracking-wide text-slate-400">Secs</p></div>
+                </div>
+            </div>
 
-  <!-- SURPRISE SECTION (hidden until YES) -->
-  <div id="surpriseSection" class="surprise-section">
-    <div class="birthday-header">
-      <div class="photo-frame">
-        <!-- 🔽🔽🔽 PASTE YOUR CATBOX IMAGE LINK BELOW (replace the src URL) 🔽🔽🔽 -->
-        <img src="https://files.catbox.moe/hcw52r.jpg" alt="Kiss Danny" style="background: #f7dc6f;">
-        <!-- 👆👆👆 Replace the src above with your actual Catbox link 👆👆👆 -->
-      </div>
-      <h1>
-        HAPPY BIRTHDAY<br>KISS DANNY! 🎉
-      </h1>
-      <div class="decor-line">
-        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-      </div>
-      <div class="cry-message">
-        <i class="fa-regular fa-face-grin-tears"></i> This is YOUR moment! <i class="fa-regular fa-face-grin-tears"></i>
-      </div>
-    </div>
+            <div class="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
+                <a href="#tickets" class="bg-slate-900 hover:bg-slate-800 text-white text-lg font-semibold py-4 px-8 rounded-full shadow-lg transition transform hover:scale-105">Reserve Seat ($300 Early Bird)</a>
+                <a href="#about" class="border-2 border-slate-300 hover:border-slate-900 text-slate-700 text-lg font-semibold py-4 px-8 rounded-full transition">Meet the Host <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+        </div>
+        <div class="flex-1 flex justify-center">
+            <div class="relative w-80 h-80 md:w-96 md:h-96 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl">
+                <!-- YOUR ACTUAL PHOTO -->
+                <img src="https://files.catbox.moe/y1o5et.jpg" alt="Weather Wisdom Host" class="w-72 h-72 md:w-80 md:h-80 rounded-full object-cover border-8 border-white shadow-inner">
+                <div class="absolute -bottom-4 -right-4 bg-white p-3 rounded-full shadow-lg">
+                    <i class="fas fa-microphone-alt text-3xl text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <div class="heartfelt-text">
-      <i class="fa-solid fa-quote-left" style="color: #d4a017;"></i> 
-      Danny, you’re the sunshine in every room — and yellow is your color for a reason. 
-      You bring warmth, laughter, and the kind of friendship that makes life beautiful. 
+    <!-- Event Format Grid -->
+    <section class="bg-white py-16 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">The 75-Minute Power Format</h2>
+            <p class="text-center text-slate-500 mb-12">From fun stories to actionable hacks — leave with a new lens on the forecast.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6"><i class="fas fa-cloud-sun-rain"></i></div>
+                    <h3 class="text-xl font-bold mb-2">20 min: Stories & Live Demo</h3>
+                    <p class="text-slate-600">Behind-the-scenes radio moments + a live mini-forecast demo that the audience loves.</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6"><i class="fas fa-shield-halved"></i></div>
+                    <h3 class="text-xl font-bold mb-2">20 min: Key Tips</h3>
+                    <p class="text-slate-600">Rainy season survival, winter storm readiness, and risk assessment for business owners.</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-md transition">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6"><i class="fas fa-camera-retro"></i></div>
+                    <h3 class="text-xl font-bold mb-2">15-20 min: Q&A + Weather Selfie</h3>
+                    <p class="text-slate-600">Interactive segment ending with a photo line and a unique "weather selfie" moment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing (USD) -->
+    <section id="tickets" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-blue-600 font-semibold tracking-widest text-sm">PREMIUM ACCESS</span>
+            <h2 class="text-4xl font-bold text-slate-900 mt-2">Secure Your Seat (USD Pricing)</h2>
+            <p class="text-slate-500 mt-2">Early bird savings ($50 off) end soon. Perfect for individuals, diaspora, and corporate sponsors.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 items-stretch">
+            <!-- General Ticket: Regular $350, Early Bird $300 -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-sm flex flex-col">
+                <h3 class="text-2xl font-bold text-slate-800">General Admission</h3>
+                <p class="text-slate-500 mb-4">Full talk + Q&A access</p>
+                <div class="mb-6">
+                    <span class="text-5xl font-extrabold text-slate-900">$350</span>
+                    <span class="text-slate-400 line-through ml-2">$400</span>
+                    <span class="block text-green-600 font-medium text-sm mt-1">Early Bird: $300</span>
+                </div>
+                <ul class="space-y-3 text-slate-600 mb-8 flex-grow">
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Main Hall Seating</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Event Digital Brochure</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Audience Q&A Participation</li>
+                </ul>
+                <!-- TELEGRAM LINK -->
+                <a href="https://t.me/ethanwalker071" target="_blank" class="block text-center bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl transition">Get General Ticket →</a>
+            </div>
+
+            <!-- VIP Ticket: Regular $550, Early Bird $500 -->
+            <div class="bg-gradient-to-b from-blue-50 to-white rounded-3xl p-8 border-2 border-blue-500 shadow-xl scale-105 z-10 flex flex-col">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-2xl font-bold text-slate-800">VIP Experience</h3>
+                    <span class="bg-yellow-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</span>
+                </div>
+                <p class="text-slate-500 mb-4">Front row + signed poster + personal interaction</p>
+                <div class="mb-6">
+                    <span class="text-5xl font-extrabold text-slate-900">$550</span>
+                    <span class="text-slate-400 line-through ml-2">$600</span>
+                    <span class="block text-green-600 font-medium text-sm mt-1">Early Bird: $500</span>
+                </div>
+                <ul class="space-y-3 text-slate-600 mb-8 flex-grow">
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>Front Row Reserved</strong></li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Signed Limited Edition Poster</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>Exclusive Personal Interaction</strong> (Post-event 1-on-1 moment)</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Priority Photo Line Access</li>
+                </ul>
+                <!-- TELEGRAM LINK -->
+                <a href="https://t.me/ethanwalker071" target="_blank" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg">Get VIP Ticket →</a>
+            </div>
+
+            <!-- Corporate Table -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-sm flex flex-col">
+                <h3 class="text-2xl font-bold text-slate-800">Corporate Table</h3>
+                <p class="text-slate-500 mb-4">8 Seats + Brand Visibility</p>
+                <div class="mb-6">
+                    <span class="text-5xl font-extrabold text-slate-900">$800</span>
+                    <span class="block text-slate-400 text-sm mt-1">(Equivalent to $100/seat)</span>
+                </div>
+                <ul class="space-y-3 text-slate-600 mb-8 flex-grow">
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Reserved Table for 8</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Company Logo on Event Screen</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Mention in Radio Promo (1x)</li>
+                    <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Ideal for Sponsors / Teams</li>
+                </ul>
+                <!-- TELEGRAM LINK -->
+                <a href="https://t.me/ethanwalker071" target="_blank" class="block text-center bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl transition">Reserve Table →</a>
+            </div>
+        </div>
+        <p class="text-center text-slate-500 text-sm mt-6">*All prices in USD. Secure checkout. Early bird valid for first 2 weeks.</p>
+    </section>
+
+    <!-- Radio Promo & Checklist -->
+    <section class="bg-slate-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+            <div>
+                <h3 class="text-2xl font-bold mb-4 flex items-center"><i class="fas fa-radio text-blue-400 mr-3"></i> Tune In & Win</h3>
+                <p class="text-slate-300 mb-6">Listen to [Your Station Name] this week for a chance to win 2 VIP Tickets. Share your wildest weather story on air!</p>
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700">
+                    <p class="font-mono text-blue-400 text-sm">📻 ON-AIR CONTEST</p>
+                    <p class="text-xl font-bold">"First 50 callers get Early Bird access code: <span class="bg-yellow-400 text-slate-900 px-3 py-1 rounded">WEATHER50</span>"</p>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-4">📋 Quick Setup Checklist</h3>
+                <ul class="space-y-3 text-slate-300">
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Choose exact topic & date</li>
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Book venue (NYC)</li>
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Make flyer in Canva (10 mins)</li>
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Set up USD ticket link</li>
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Record 30-sec radio promo</li>
+                    <li class="flex items-center"><i class="far fa-check-circle text-green-400 mr-3"></i> Drop first announcement tomorrow</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-8 text-center text-slate-500 border-t">
+        <p class="text-lg font-bold text-slate-700">☀️ Weather Wisdom Keynote Series</p>
+        <p class="text-sm">© 2026 [Your Name]. All rights reserved. Designed for impact.</p>
+        <div class="flex justify-center gap-6 mt-4">
+            <a href="#" class="text-slate-400 hover:text-blue-600"><i class="fab fa-instagram text-xl"></i></a>
+            <a href="#" class="text-slate-400 hover:text-blue-600"><i class="fab fa-tiktok text-xl"></i></a>
+            <a href="#" class="text-slate-400 hover:text-blue-600"><i class="fab fa-whatsapp text-xl"></i></a>
+        </div>
+    </footer>
+
+    <!-- Countdown Timer Script -->
+    <script>
+        const countDownDate = new Date();
+        countDownDate.setDate(countDownDate.getDate() + 14);
+        
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                document.querySelector(".bg-white.p-4").innerHTML = "<p class='text-green-600 font-bold'>Early bird has ended. Regular pricing applies.</p>";
+            }
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+  </html>the kind of friendship that makes life beautiful. 
       Today, the whole world celebrates YOU. May your day be filled with golden joy, cake, and tears of happiness. 
       I’m so lucky to call you my friend. Keep shining, you absolute legend. 
       <i class="fa-solid fa-quote-right" style="color: #d4a017;"></i>
